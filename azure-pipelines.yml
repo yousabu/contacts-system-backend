@@ -6,8 +6,6 @@ trigger:
 pool: yarb
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
 - script: |
     echo "##vso[task.setvariable variable=imageTag]$(Build.BuildId)"
@@ -34,3 +32,16 @@ steps:
     tags: |
       $(latestTag)
     arguments: '--tag $(containerRegistry)/$(repository):$(latestTag)'
+
+- script: |
+    echo "Cleaning up old Docker images except for the latest tag..."
+
+    # List all Docker images with their tags, filter out the 'latest' tag
+    images_to_delete=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -v ':latest')
+
+    # Remove images that are not tagged as 'latest'
+    for image in $images_to_delete; do
+      echo "Deleting image $image"
+      docker rmi $image || true
+    done
+  displayName: 'Clean Up Old Docker Images Locally'
