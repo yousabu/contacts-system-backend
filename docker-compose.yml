@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  express:
+    image: youssefabu/media-network-expressjs:latest
+    container_name: contacts_express
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - SECRET=Thisismysecret
+      - MONGO_DB_USERNAME=contacts-user  # Non-root username
+      - MONGO_DB_PASSWORD=contacts-password # Non-root password
+      - MONGO_DB_HOST=database
+      - MONGO_DB_PORT=27017
+      - MONGO_DB_PARAMETERS=?authSource=contacts-system # Specify the authentication database
+      - MONGO_DB_DATABASE=contacts-system  # The database your app will connect to
+    links:
+      - database
+    networks:
+      - shared-network
+
+  database:
+    image: mongo:latest
+    container_name: contacts_mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin-user
+      - MONGO_INITDB_ROOT_PASSWORD=admin-password
+      - MONGO_DB_USERNAME=contacts-user
+      - MONGO_DB_PASSWORD=contacts-password
+      - MONGO_DB=contacts-system
+    volumes:
+      - ./mongo:/home/mongodb
+      - ./mongo/db:/data/db
+      - ./mongo/init-db.d/:/docker-entrypoint-initdb.d/
+    ports:
+      - "27017:27017"
+    networks:
+      - shared-network
+
+      
+networks:
+  shared-network:
+    external: true
+

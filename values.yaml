@@ -1,0 +1,34 @@
+replicaCount: 1
+
+backend: true
+namespace: backend
+
+
+image:
+  repository: youssefabu/media-network-expressjs
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 3000
+  nodePort: 31000
+
+
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+
+env:
+  SECRET: "Thisismysecret"
+  MONGO_DB_HOST: "mongo-svc"
+  MONGO_DB_PORT: "27017"
+  MONGO_DB_PARAMETERS: "?authSource=contacts-system"
+  MONGO_DB_DATABASE: "contacts-system"
+
+secret:
+  MONGO_DB_USERNAME: "Y29udGFjdHMtdXNlcg=="
+  MONGO_DB_PASSWORD: "Y29udGFjdHMtcGFzc3dvcmQ="

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongo-init-script
+  namespace: backend
+data:
+  init-mongo.sh: |
+    #!/bin/bash
+    mongosh <<EOF
+    use admin;
+    db.auth('${MONGO_INITDB_ROOT_USERNAME}', '${MONGO_INITDB_ROOT_PASSWORD}');
+    use contacts-system;
+    db.createUser({
+      user: "${MONGO_DB_USERNAME}",
+      pwd: "${MONGO_DB_PASSWORD}",
+      roles: [{ role: "readWrite", db: "contacts-system" }]
+    });
+    EOF
