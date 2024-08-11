@@ -48,16 +48,6 @@ steps:
       tags: |
         $(latestTag)
 
-  - script: |
-      echo "Cleaning up old Docker images except for the latest tag..."
-      # List all Docker images with their tags, filter out the 'latest' tag
-      images_to_delete=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -v ':latest')
-      # Remove images that are not tagged as 'latest'
-      for image in $images_to_delete; do
-        echo "Deleting image $image"
-        docker rmi $image || true
-      done
-    displayName: 'Clean Up Old Docker Images Locally'
 
   - checkout: helmchart-repo # Checkout the specific repository using the alias
   - script: |
@@ -77,7 +67,7 @@ steps:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'microk8s-cluster'
       namespace: 'backend'
-      command: 'upgrade'
+      command: 'upgraxde'
       chartType: 'FilePath'
       chartPath: 'contacts-system-helmchart'
       releaseName: 'express'
@@ -98,3 +88,14 @@ steps:
       microk8s helm rollback express --namespace backend
     displayName: 'Rollback Helm Deployment'
     condition: failed()
+  
+  - script: |
+      echo "Cleaning up old Docker images except for the latest tag..."
+      # List all Docker images with their tags, filter out the 'latest' tag
+      images_to_delete=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -v ':latest')
+      # Remove images that are not tagged as 'latest'
+      for image in $images_to_delete; do
+        echo "Deleting image $image"
+        docker rmi $image || true
+      done
+    displayName: 'Clean Up Old Docker Images Locally'
