@@ -9,17 +9,20 @@ resources:
   repositories:
     - repository: helmchart-repo  # Alias for the repository
       type: github
-      name: yousabu/contacts-system-helmchart  # The full name of your repository in GitHub (organization/repo)
+      name: yousabu/contacts-system-helmchart  # The full name of your repository in GitHub 
       endpoint: github-contact-system
 
 
 
 steps:
+  # check helm installation
 - task: HelmInstaller@0
+  displayName: Check Helm Installation
   inputs:
     helmVersion: '3.15.3'
     # installKubectl: true
 
+## Pull repos and set tags
 - checkout: self
 - script: |
     echo "##vso[task.setvariable variable=imageTag]$(Build.BuildId)"
@@ -50,10 +53,8 @@ steps:
 
 - script: |
     echo "Cleaning up old Docker images except for the latest tag..."
-
     # List all Docker images with their tags, filter out the 'latest' tag
     images_to_delete=$(docker images --format '{{.Repository}}:{{.Tag}}' | grep -v ':latest')
-
     # Remove images that are not tagged as 'latest'
     for image in $images_to_delete; do
       echo "Deleting image $image"
@@ -63,15 +64,14 @@ steps:
 
 
 - checkout:  helmchart-repo # Checkout the specific repository using the alias
-
 - script: |
     echo "Repository cloned successfully."
     ls -la  # List files to verify the clone
-  displayName: 'Clone helm'
+  displayName: 'Check Dirictory Files'
   
 
 - task: HelmDeploy@1
-  displayName: 'Deploy HelmChart'
+  displayName: 'Deploy Express HelmChart'
   inputs:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceConnection: 'microk8s-cluster'
