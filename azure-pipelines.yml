@@ -67,20 +67,13 @@ steps:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'microk8s-cluster'
       namespace: 'backend'
-      command: 'upgraxde'
+      command: 'upgrade'
       chartType: 'FilePath'
       chartPath: 'contacts-system-helmchart'
       releaseName: 'express'
       valueFile: 'contacts-system-backend/values.yaml'
       recreate: true
 
-
-  # Rollback Helm deployment on failure
-  - script: |
-      echo "Rolling back Helm deployment..."
-      helm rollback express
-    displayName: 'Rollback Helm Deployment'
-    condition: failed()
 
 
   # Rollback Helm Deployment on failure
@@ -99,3 +92,4 @@ steps:
         docker rmi $image || true
       done
     displayName: 'Clean Up Old Docker Images Locally'
+    
