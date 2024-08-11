@@ -91,3 +91,10 @@ steps:
       helm rollback express
     displayName: 'Rollback Helm Deployment'
     condition: failed()
+
+  - task: GitHubComment@0
+    inputs:
+      gitHubConnection: 'github-contact-system'
+      repositoryName: 'yousabu/contacts-system-backend'
+      comment: 'add image tag to values.yaml'
+
