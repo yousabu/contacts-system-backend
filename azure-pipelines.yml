@@ -72,6 +72,7 @@ steps:
     displayName: 'Update Image Tag in values.yaml'
   
   - script: |
+      cd contacts-system-backend/
       git config user.email "youssef.abuhamda@gmail.com"
       git config user.name "Youssef AbuHamda"
       git add contacts-system-helmchart/values.yaml
