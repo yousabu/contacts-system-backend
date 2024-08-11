@@ -14,7 +14,7 @@ resources:
 
 
 steps:
-
+- checkout: self
 - script: |
     echo "##vso[task.setvariable variable=imageTag]$(Build.BuildId)"
     echo "##vso[task.setvariable variable=latestTag]latest"
