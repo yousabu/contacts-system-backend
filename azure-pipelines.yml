@@ -62,4 +62,24 @@ steps:
     echo "Repository cloned successfully."
     ls -la  # List files to verify the clone
   displayName: 'Clone helm'
+  
+
+- task: HelmInstaller@0
+  inputs:
+    helmVersion: '2.14.1'
+    installKubectl: true
+
+- task: HelmDeploy@1
+  displayName: 'Deploy HelmChart'
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceConnection: 'microk8s-cluster'
+    namespace: 'backend'
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: 'contacts-system-helmchart'
+    chartVersion: '1.0.0'
+    releaseName: 'express'
+    valueFile: 'contacts-system-backend/values.yaml'
+    recreate: true
 
