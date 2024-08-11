@@ -74,6 +74,8 @@ steps:
   - script: |
       # Ensure you are on the correct branch
       cd contacts-system-backend/
+      git config --global user.email "youssef.abuhamda@gmail.com"
+      git config --global user.name "yousabu"
       git checkout main || git checkout -b main
       # Update values.yaml in the correct path
       sed -i 's/tag:.*/tag: $(Build.BuildId)/' values.yaml
