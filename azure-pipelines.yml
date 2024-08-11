@@ -71,22 +71,6 @@ steps:
       cat contacts-system-backend/values.yaml
     displayName: 'Update Image Tag in values.yaml'
   
-  - script: |
-      # Ensure you are on the correct branch
-      cd contacts-system-backend/
-      git config --global user.email "youssef.abuhamda@gmail.com"
-      git config --global user.name "yousabu"
-      git checkout main || git checkout -b main
-      # Update values.yaml in the correct path
-      sed -i 's/tag:.*/tag: $(Build.BuildId)/' values.yaml
-      # Add the changes
-      git add values.yaml
-      # Commit the changes
-      git commit -m "Update image tag to $(Build.BuildId)"
-      # Push the changes to the main branch
-      git push origin main
-    displayName: 'Commit and Push Changes to Backend Repository'
-
   - task: HelmDeploy@1
     displayName: 'Deploy Express HelmChart'
     inputs:
@@ -109,13 +93,8 @@ steps:
     condition: failed()
 
 
-  - task: HelmDeploy@1
-    displayName: 'Deploy Express HelmChart'
+  # Rollback Helm Deployment on failure
+  - script: |
+      microk8s helm rollback express --namespace backend
+    displayName: 'Rollback Helm Deployment'
     condition: failed()
-    inputs:
-      connectionType: 'Kubernetes Service Connection'
-      kubernetesServiceConnection: 'microk8s-cluster'
-      namespace: 'backend'
-      command: 'rollback'
-      releaseName: 'express'
-
