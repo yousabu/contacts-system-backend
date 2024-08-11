@@ -116,5 +116,6 @@ steps:
       connectionType: 'Kubernetes Service Connection'
       kubernetesServiceConnection: 'microk8s-cluster'
       namespace: 'backend'
+      command: 'rollback'
       releaseName: 'express'
 
