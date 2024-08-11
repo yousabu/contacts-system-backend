@@ -5,6 +5,14 @@ trigger:
 
 pool: yarb
 
+resources:
+  repositories:
+    - repository: helmchart-repo  # Alias for the repository
+      type: github
+      name: yousabu/contacts-system-helmchart  # The full name of your repository in GitHub (organization/repo)
+      endpoint: github-contact-system
+
+
 steps:
 
 - script: |
@@ -45,3 +53,12 @@ steps:
       docker rmi $image || true
     done
   displayName: 'Clean Up Old Docker Images Locally'
+
+
+- checkout:  helmchart-repo # Checkout the specific repository using the alias
+
+- script: |
+    echo "Repository cloned successfully."
+    ls -la  # List files to verify the clone
+  displayName: 'Clone helm'
+
