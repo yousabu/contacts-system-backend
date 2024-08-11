@@ -55,10 +55,10 @@ steps:
   displayName: 'Clean Up Old Docker Images Locally'
 
 
-- checkout:  helmchart-repo # Checkout the specific repository using the alias
+# - checkout:  helmchart-repo # Checkout the specific repository using the alias
 
-- script: |
-    echo "Repository cloned successfully."
-    ls -la  # List files to verify the clone
-  displayName: 'Clone helm'
+# - script: |
+#     echo "Repository cloned successfully."
+#     ls -la  # List files to verify the clone
+#   displayName: 'Clone helm'
 
