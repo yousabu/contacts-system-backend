@@ -92,6 +92,6 @@ Pipeline
    
 ```
 
-HelmChart URL: https://github.com/yousabu/contacts-system-helmchart.git
-frontend URL : https://github.com/yousabu/contacts-system-frontend.git
+* HelmChart URL: https://github.com/yousabu/contacts-system-helmchart.git
+* frontend URL : https://github.com/yousabu/contacts-system-frontend.git
 
