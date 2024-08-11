@@ -70,6 +70,14 @@ steps:
       sed -i 's/tag:.*/tag: $(Build.BuildId)/' contacts-system-backend/values.yaml
       cat contacts-system-backend/values.yaml
     displayName: 'Update Image Tag in values.yaml'
+  
+  - script: |
+      git config user.email "youssef.abuhamda@gmail.com"
+      git config user.name "Youssef AbuHamda"
+      git add contacts-system-helmchart/values.yaml
+      git commit -m "Update image tag to $(Build.BuildId)"
+      git push origin main
+    displayName: 'Commit and Push Changes to Backend Repository'
 
   - task: HelmDeploy@1
     displayName: 'Deploy Express HelmChart'
@@ -92,9 +100,4 @@ steps:
     displayName: 'Rollback Helm Deployment'
     condition: failed()
 
-  - task: GitHubComment@0
-    inputs:
-      gitHubConnection: 'github-contact-system'
-      repositoryName: 'yousabu/contacts-system-backend'
-      comment: 'add image tag to values.yaml'
 
