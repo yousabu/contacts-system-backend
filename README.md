@@ -49,10 +49,16 @@ CMD ["npm", "start"]
 
 Run `docker-compose up -d` to start the backend express service and MongoDB.
 - The backend service will now be available at localhost:3000, and the frontend can start using it.
+![cup](https://github.com/user-attachments/assets/2d201566-e97a-480a-ac2b-3cf229ac1332)
+
 
 Run `docker-compose down` to stop.
+![cdown](https://github.com/user-attachments/assets/dca793e4-ed1d-4d55-89b2-e68b4449e3bc)
+
 
 ### Azure Pipeline
+![pexp](https://github.com/user-attachments/assets/792e62d2-e84c-4294-927c-9985b58e391a)
+
 
 ``` azure-pipelines.yml
 Pipeline
